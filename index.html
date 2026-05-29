@@ -4,62 +4,276 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Pattern Games Lab</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400&family=Montserrat:wght@100;200;300;400&display=swap" />
   <style>
-    body {
-      margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
-      background: #0f0f10;
-      color: #ffffff;
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --red: #CC2222;
+      --black: #111111;
+      --white: #FFFFFF;
+      --off-white: #F7F7F7;
+      --gray: #999999;
+      --light-gray: #E8E8E8;
+      --text: #1A1A1A;
     }
-    .container {
+
+    body {
+      background: var(--white);
+      color: var(--text);
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 300;
+      min-height: 100vh;
+    }
+
+    /* HEADER */
+    header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: var(--white);
+      border-bottom: 1px solid var(--light-gray);
+      padding: 0 40px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .header-brand {
+      font-size: 11px;
+      font-weight: 200;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    /* HERO */
+    .hero {
+      padding: 140px 40px 80px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-circles {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .hero-circle {
+      position: absolute;
+      border-radius: 50%;
+      opacity: 0.05;
+    }
+
+    .hero p.tag {
+      font-size: 10px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--gray);
+      margin-bottom: 16px;
+    }
+
+    .hero h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: clamp(2.8rem, 7vw, 6rem);
+      letter-spacing: 0.05em;
+      line-height: 1.05;
+      color: var(--black);
+    }
+
+    .hero h1 span { color: var(--red); }
+
+    .hero p.sub {
+      margin-top: 20px;
+      font-size: 13px;
+      letter-spacing: 0.1em;
+      color: var(--gray);
+    }
+
+    /* GAMES SECTION */
+    .games {
       max-width: 900px;
       margin: 0 auto;
-      padding: 60px 20px;
+      padding: 0 40px 120px;
     }
-    h1 {
-      font-size: 42px;
-      margin-bottom: 10px;
+
+    .section-label {
+      font-size: 10px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--gray);
+      margin-bottom: 32px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--light-gray);
     }
-    .subtitle {
-      color: #aaa;
-      margin-bottom: 40px;
-    }
-    .card {
-      background: #1a1a1c;
-      border-radius: 16px;
-      padding: 20px;
-      max-width: 300px;
-    }
-    .game-title {
-      font-size: 20px;
-      margin-bottom: 10px;
-    }
-    a {
-      display: block;
-      color: #ff3b30;
-      text-decoration: none;
-      margin: 6px 0;
-      font-size: 14px;
-    }
-    .grid {
+
+    .games-grid {
       display: flex;
-      gap: 20px;
       flex-wrap: wrap;
+      gap: 24px;
+    }
+
+    /* GAME CARD */
+    .game-card {
+      background: var(--off-white);
+      border: 1px solid var(--light-gray);
+      width: 280px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card-top {
+      padding: 32px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      border-bottom: 1px solid var(--light-gray);
+    }
+
+    .card-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 14px;
+      overflow: hidden;
+      flex-shrink: 0;
+      background: var(--white);
+    }
+
+    .card-icon img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .card-info .card-name {
+      font-size: 13px;
+      font-weight: 400;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--black);
+    }
+
+    .card-info .card-desc {
+      font-size: 11px;
+      color: var(--gray);
+      margin-top: 4px;
+      line-height: 1.5;
+    }
+
+    .card-links {
+      padding: 8px 0;
+    }
+
+    .card-links a {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 32px;
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text);
+      text-decoration: none;
+      transition: background 0.15s, color 0.15s;
+      border-bottom: 1px solid var(--light-gray);
+    }
+
+    .card-links a:last-child {
+      border-bottom: none;
+    }
+
+    .card-links a:hover {
+      background: var(--white);
+      color: var(--red);
+    }
+
+    .link-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--red);
+      flex-shrink: 0;
+      opacity: 0.5;
+    }
+
+    .card-links a:hover .link-dot {
+      opacity: 1;
+    }
+
+    /* FOOTER */
+    footer {
+      border-top: 1px solid var(--light-gray);
+      padding: 32px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    footer span {
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gray);
+    }
+
+    @media (max-width: 600px) {
+      header { padding: 0 20px; }
+      .hero { padding: 110px 24px 60px; }
+      .games { padding: 0 24px 80px; }
+      footer { padding: 24px 20px; }
+      .game-card { width: 100%; }
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Pattern Games Lab</h1>
-    <p class="subtitle">Minimalist brain puzzle games studio</p>
-    <div class="grid">
-      <div class="card">
-        <div class="game-title">Focus Circles</div>
-        <a href="focus-circles/privacy.html">Privacy Policy</a>
-        <a href="focus-circles/terms.html">Terms of Use</a>
-        <a href="focus-circles/support.html">Support</a>
+
+<header>
+  <span class="header-brand">Pattern Games Lab</span>
+</header>
+
+<div class="hero">
+  <div class="hero-circles">
+    <div class="hero-circle" style="width:500px;height:500px;top:-150px;right:-100px;background:#CC2222;"></div>
+    <div class="hero-circle" style="width:200px;height:200px;bottom:-50px;left:5%;background:#111;"></div>
+    <div class="hero-circle" style="width:80px;height:80px;top:100px;left:40%;background:#CC2222;"></div>
+  </div>
+  <p class="tag">iOS Games Studio</p>
+  <h1>PATTERN<br /><span>GAMES</span><br />LAB</h1>
+  <p class="sub">Minimalist brain puzzle games</p>
+</div>
+
+<div class="games">
+  <p class="section-label">Games</p>
+  <div class="games-grid">
+
+    <div class="game-card">
+      <div class="card-top">
+        <div class="card-icon">
+          <img src="focus-circles/icon.png" alt="Focus Circles" />
+        </div>
+        <div class="card-info">
+          <div class="card-name">Focus Circles</div>
+          <div class="card-desc">Count. Focus.<br />Level up.</div>
+        </div>
+      </div>
+      <div class="card-links">
+        <a href="focus-circles/privacy.html"><span class="link-dot"></span>Privacy Policy</a>
+        <a href="focus-circles/terms.html"><span class="link-dot"></span>Terms of Use</a>
+        <a href="focus-circles/support.html"><span class="link-dot"></span>Support</a>
       </div>
     </div>
+
   </div>
+</div>
+
+<footer>
+  <span>© 2026 Pattern Games Lab</span>
+</footer>
+
 </body>
 </html>
